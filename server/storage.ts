@@ -1,8 +1,8 @@
 import { users, waitlist, type User, type InsertUser, type InsertWaitlist, type Waitlist } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
-// modify the interface with any CRUD methods
-// you might need
-
+// Define the storage interface with the methods needed by the application
 export interface IStorage {
   // User methods
   getUser(id: number): Promise<User | undefined>;
@@ -16,63 +16,49 @@ export interface IStorage {
   getWaitlistEntryByEmail(email: string): Promise<Waitlist | undefined>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private waitlistEntries: Map<number, Waitlist>;
-  userCurrentId: number;
-  waitlistCurrentId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.waitlistEntries = new Map();
-    this.userCurrentId = 1;
-    this.waitlistCurrentId = 1;
-  }
-
+// Define the database storage implementation
+export class DatabaseStorage implements IStorage {
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const result = await db.select().from(users).where(eq(users.id, id));
+    return result.length > 0 ? result[0] : undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const result = await db.select().from(users).where(eq(users.username, username));
+    return result.length > 0 ? result[0] : undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.userCurrentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const result = await db.insert(users).values(insertUser).returning();
+    return result[0];
   }
   
   // Waitlist methods
   async addToWaitlist(entry: InsertWaitlist & { createdAt: string }): Promise<Waitlist> {
-    const id = this.waitlistCurrentId++;
     // Ensure receiveUpdates is not undefined
-    const waitlistEntry: Waitlist = { 
+    const safeEntry = { 
       ...entry, 
-      id,
       receiveUpdates: entry.receiveUpdates === undefined ? false : entry.receiveUpdates 
     };
-    this.waitlistEntries.set(id, waitlistEntry);
-    return waitlistEntry;
+    const result = await db.insert(waitlist).values(safeEntry).returning();
+    return result[0];
   }
   
   async getWaitlistEntries(): Promise<Waitlist[]> {
-    return Array.from(this.waitlistEntries.values());
+    return db.select().from(waitlist);
   }
   
   async getWaitlistEntry(id: number): Promise<Waitlist | undefined> {
-    return this.waitlistEntries.get(id);
+    const result = await db.select().from(waitlist).where(eq(waitlist.id, id));
+    return result.length > 0 ? result[0] : undefined;
   }
   
   async getWaitlistEntryByEmail(email: string): Promise<Waitlist | undefined> {
-    return Array.from(this.waitlistEntries.values()).find(
-      (entry) => entry.email === email,
-    );
+    const result = await db.select().from(waitlist).where(eq(waitlist.email, email));
+    return result.length > 0 ? result[0] : undefined;
   }
 }
 
-export const storage = new MemStorage();
+// Create and export the storage instance
+export const storage = new DatabaseStorage();
