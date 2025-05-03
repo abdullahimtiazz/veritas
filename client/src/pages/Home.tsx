@@ -2,7 +2,6 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import ProductShowcase from "@/components/ProductShowcase";
-import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
@@ -19,7 +18,6 @@ export default function Home() {
       <Hero onSuccessfulSignup={() => setShowSuccessDialog(true)} />
       <Features />
       <ProductShowcase />
-      <Testimonials />
       <Pricing />
       <FAQ />
       <CTA />
