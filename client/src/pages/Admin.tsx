@@ -1,14 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Spinner } from "@/components/ui/spinner";
 import { getQueryFn } from "@/lib/queryClient";
 import { useQuery } from "@tanstack/react-query";
 import type { Waitlist } from "@shared/schema";
+
+// Simple spinner component for loading state
+function Spinner() {
+  return (
+    <div className="flex justify-center items-center py-10">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+    </div>
+  )
+}
 
 export default function AdminPage() {
   const [location, setLocation] = useLocation();
@@ -17,10 +25,17 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Define a type for the waitlist response
+  interface WaitlistResponse {
+    message: string;
+    totalEntries: number;
+    data: Waitlist[];
+  }
+
   // Fetch waitlist entries query
-  const waitlistQuery = useQuery({
+  const waitlistQuery = useQuery<WaitlistResponse>({
     queryKey: ["/api/admin/waitlist"],
-    queryFn: getQueryFn({
+    queryFn: getQueryFn<WaitlistResponse>({
       on401: "returnNull",
     }),
     enabled: isAuthenticated,
@@ -116,7 +131,12 @@ export default function AdminPage() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Waitlist Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <h1 className="text-3xl font-bold">Waitlist Dashboard</h1>
+          <a href="/" className="text-primary hover:underline text-sm">
+            ← Back to Website
+          </a>
+        </div>
         <Button variant="outline" onClick={handleLogout}>
           Logout
         </Button>

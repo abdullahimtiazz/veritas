@@ -95,9 +95,14 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            &copy; {currentYear} Veritas AI. All rights reserved.
-          </p>
+          <div>
+            <p className="text-gray-400 text-sm mb-2 md:mb-0">
+              &copy; {currentYear} Veritas AI. All rights reserved.
+            </p>
+            <p className="text-gray-500 text-xs">
+              <a href="/admin" className="hover:text-gray-400 transition-colors">Administrator Login</a>
+            </p>
+          </div>
           <div className="flex items-center space-x-4">
             <span className="text-gray-400 text-sm">Available on:</span>
             <FaWindows className="text-gray-400" />
