@@ -5,10 +5,10 @@ const plans = [
   {
     name: "Basic",
     description: "For occasional job seekers",
-    price: "$9",
-    period: "/month",
+    price: "Free",
+    period: "for 1 day",
     features: [
-      { included: true, text: "5 AI interview sessions per month" },
+      { included: true, text: "2 AI interview sessions" },
       { included: true, text: "Basic performance analytics" },
       { included: true, text: "General industry questions" },
       { included: false, text: "Advanced feedback analysis" },
@@ -20,7 +20,7 @@ const plans = [
   {
     name: "Professional",
     description: "For active job seekers",
-    price: "$19",
+    price: "RMB 398",
     period: "/month",
     features: [
       { included: true, text: "Unlimited AI interview sessions" },
@@ -35,11 +35,11 @@ const plans = [
   {
     name: "Enterprise",
     description: "For organizations",
-    price: "$99",
-    period: "/month",
+    price: "Contact Sales",
+    period: "",
     features: [
       { included: true, text: "Everything in Professional" },
-      { included: true, text: "5+ user accounts" },
+      { included: true, text: "100+ user account registration" },
       { included: true, text: "Custom interview scenarios" },
       { included: true, text: "Company-specific training" },
       { included: true, text: "Admin dashboard & analytics" }
