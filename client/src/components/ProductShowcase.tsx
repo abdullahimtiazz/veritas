@@ -29,7 +29,7 @@ export default function ProductShowcase() {
           </p>
         </div>
         
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden mb-16">
+        {/* <div className="bg-white rounded-xl shadow-xl overflow-hidden mb-16">
           <div className="h-96 bg-gray-800 relative">
             <div className="absolute inset-0 flex items-center justify-center text-white">
               <div className="text-center">
@@ -45,7 +45,7 @@ export default function ProductShowcase() {
               className="w-full h-full object-cover opacity-70"
             />
           </div>
-        </div>
+        </div> */}
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {showcaseItems.map((item, index) => (
