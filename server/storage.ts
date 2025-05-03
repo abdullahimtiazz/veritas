@@ -50,7 +50,12 @@ export class MemStorage implements IStorage {
   // Waitlist methods
   async addToWaitlist(entry: InsertWaitlist & { createdAt: string }): Promise<Waitlist> {
     const id = this.waitlistCurrentId++;
-    const waitlistEntry: Waitlist = { ...entry, id };
+    // Ensure receiveUpdates is not undefined
+    const waitlistEntry: Waitlist = { 
+      ...entry, 
+      id,
+      receiveUpdates: entry.receiveUpdates === undefined ? false : entry.receiveUpdates 
+    };
     this.waitlistEntries.set(id, waitlistEntry);
     return waitlistEntry;
   }

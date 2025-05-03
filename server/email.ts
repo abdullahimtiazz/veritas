@@ -1,5 +1,10 @@
 import { MailService } from '@sendgrid/mail';
 
+// Check for SendGrid API key
+if (!process.env.SENDGRID_API_KEY) {
+  console.warn("SENDGRID_API_KEY environment variable is not set. Email functionality will be disabled.");
+}
+
 // Initialize SendGrid client with the API key
 const mailService = new MailService();
 mailService.setApiKey(process.env.SENDGRID_API_KEY || '');
@@ -92,13 +97,20 @@ The Veritas AI Team`,
     };
 
     // Use SendGrid to send the email
-    const from = 'notifications@veritasai.example.com';
+    const from = 'notifications@veritasai.example.com' as string;
+    
+    // Make sure API key is set
+    if (!process.env.SENDGRID_API_KEY) {
+      console.warn(`Email would have been sent to ${email} but SENDGRID_API_KEY is not set`);
+      return false;
+    }
+    
     await mailService.send({
       to: params.to,
       from,
       subject: params.subject,
-      text: params.text,
-      html: params.html,
+      text: params.text || '',
+      html: params.html || '',
     });
     
     console.log(`Confirmation email sent to ${email}`);
