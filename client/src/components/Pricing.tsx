@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
-    name: "Basic",
-    description: "For occasional job seekers",
-    price: "Free",
-    period: "for 1 day",
+    name: "Free Trial",
+    description: "Seeing is believing",
+    price: "Free of charge",
+    period: "",
     features: [
       { included: true, text: "2 AI interview sessions" },
       { included: true, text: "Basic performance analytics" },
@@ -35,8 +35,8 @@ const plans = [
   {
     name: "Enterprise",
     description: "For organizations",
-    price: "Contact Sales",
-    period: "",
+    price: "Starts from RMB888",
+    period: "/month",
     features: [
       { included: true, text: "Everything in Professional" },
       { included: true, text: "100+ user account registration" },
